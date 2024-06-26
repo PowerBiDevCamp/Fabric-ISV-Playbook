@@ -2,7 +2,6 @@
 class Program {
 
   public static void Main() {
-
     Setup_ViewWorkspacesAndCapacities();
     // Demo01_CreateCustomerTenant();
     // Demo02_CreateImportedSalesModel();
