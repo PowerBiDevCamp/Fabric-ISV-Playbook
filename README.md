@@ -1,4 +1,4 @@
-**Fabric-ISV-Playbook Developer Sample**
+## Fabric-ISV-Playbook Developer Sample
 
 This GitHub repository contains the source code for a developer sample
 named **FabricIsvPlaybook**. The **FabricIsvPlaybook** developer sample
