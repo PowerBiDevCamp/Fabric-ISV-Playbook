@@ -1,0 +1,47 @@
+{
+  "name": "Create Warehouse Tables",
+  "objectId": "712f51d0-ab01-4fc1-ada8-b527dfd43110",
+  "properties": {
+    "activities": [
+      {
+        "name": "Create Warehouse Tables",
+        "type": "Script",
+        "dependsOn": [],
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureOutput": false,
+          "secureInput": false
+        },
+        "linkedService": {
+          "name": "sales",
+          "objectId": "044a0aac-231d-4143-a352-0fe60f269adc",
+          "properties": {
+            "annotations": [],
+            "type": "DataWarehouse",
+            "typeProperties": {
+              "endpoint": "{WAREHOUSE_CONNECT_STRING}",
+              "artifactId": "{WAREHOUSE_ID}",
+              "workspaceId": "{WORKSPACE_ID}"
+            }
+          }
+        },
+        "typeProperties": {
+          "scripts": [
+            {
+              "type": "NonQuery",
+              "text": {
+                "value": "DROP TABLE IF EXISTS [dbo].[products];\nCREATE TABLE [dbo].[products] (\n  [ProductId] [int] NULL,\n  [Product] [varchar](50) NULL,\n  [Category] [varchar](50) NULL\n);\n\nDROP TABLE IF EXISTS [dbo].[customers];\nCREATE TABLE [dbo].[customers] (\n  [CustomerId] [int] NULL,\n  [Country] [varchar](50) NULL,\n  [City] [varchar](50) NULL,\n  [DOB] [date] NULL,\n  [Customer] [varchar](50) NULL,\n  [Age] [int] NULL\n);\n\nDROP TABLE IF EXISTS [dbo].[sales];\nCREATE TABLE [dbo].[sales] (\n  [Date] [date] NULL,\n  [DateKey] [int] NULL,\n  [CustomerId] [int] NULL,\n  [ProductId] [int] NULL,\n  [Sales] [decimal](18, 2) NULL,\n  [Quantity] [int] NULL\n);\n\nDROP TABLE IF EXISTS [dbo].[calendar];\nCREATE TABLE [dbo].[calendar] (\n  [Date] [date] NULL,\n  [DateKey] [int] NULL,\n  [Year] [int] NULL,\n  [Quarter] [varchar](50) NULL,\n  [Month] [varchar](50) NULL,\n  [Day] [int] NULL,\n  [MonthInYear] [varchar](50) NULL,\n  [MonthInYearSort] [int] NULL,\n  [DayOfWeek] [varchar](50) NULL,\n  [DayOfWeekSort] [int] NULL\n);",
+                "type": "Expression"
+              }
+            }
+          ],
+          "scriptBlockExecutionTimeout": "02:00:00"
+        }
+      }
+    ],
+    "lastModifiedByObjectId": "54995a14-fa6e-4071-b50c-9260014f4ff0",
+    "lastPublishTime": "2024-06-23T11:09:07Z"
+  }
+}

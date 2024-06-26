@@ -1,0 +1,158 @@
+{
+  "name": "Data pipeline - Create Stored Procedures for Warehouse",
+  "objectId": "14f253ce-fd6a-4c74-808d-e430d10fed07",
+  "properties": {
+    "activities": [
+      {
+        "name": "Create refresh_products",
+        "type": "Script",
+        "dependsOn": [],
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureOutput": false,
+          "secureInput": false
+        },
+        "linkedService": {
+          "name": "sales",
+          "objectId": "eabd53c3-c2dd-49ff-9d88-d7b9941b891a",
+          "properties": {
+            "annotations": [],
+            "type": "DataWarehouse",
+            "typeProperties": {
+              "endpoint": "{WAREHOUSE_CONNECT_STRING}",
+              "artifactId": "{WAREHOUSE_ID}",
+              "workspaceId": "{WORKSPACE_ID}"
+            }
+          }
+        },
+        "typeProperties": {
+          "scripts": [
+            {
+              "type": "NonQuery",
+              "text": {
+                "value": "CREATE PROCEDURE [dbo].[refresh_products]\nAS\nBEGIN\n  INSERT INTO products(ProductId, Product, Category)\n  SELECT \n    ProductId, \n    Product, \n    Category \n  FROM staging.dbo.products\nEND",
+                "type": "Expression"
+              }
+            }
+          ],
+          "scriptBlockExecutionTimeout": "02:00:00"
+        }
+      },
+      {
+        "name": "Create refresh_customers",
+        "type": "Script",
+        "dependsOn": [],
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureOutput": false,
+          "secureInput": false
+        },
+        "linkedService": {
+          "name": "sales",
+          "objectId": "eabd53c3-c2dd-49ff-9d88-d7b9941b891a",
+          "properties": {
+            "annotations": [],
+            "type": "DataWarehouse",
+            "typeProperties": {
+              "endpoint": "{WAREHOUSE_CONNECT_STRING}",
+              "artifactId": "{WAREHOUSE_ID}",
+              "workspaceId": "{WORKSPACE_ID}"
+            }
+          }
+        },
+        "typeProperties": {
+          "scripts": [
+            {
+              "type": "Query",
+              "text": {
+                "value": "CREATE PROCEDURE [dbo].[refresh_customers]\r\nAS\r\nBEGIN\r\n  INSERT INTO customers(CustomerId, Country, City, DOB, Customer, Age) \r\n  SELECT \r\n    CustomerId, \r\n    Country, \r\n    City, \r\n    DOB,\r\n    Customer = CONCAT(FirstName, ' ', LastName),\r\n    Age = YEAR(CURRENT_TIMESTAMP) - YEAR(DOB)\r\n  FROM staging.dbo.customers\r\nEND",
+                "type": "Expression"
+              }
+            }
+          ],
+          "scriptBlockExecutionTimeout": "02:00:00"
+        }
+      },
+      {
+        "name": "Create refresh_sales",
+        "type": "Script",
+        "dependsOn": [],
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureOutput": false,
+          "secureInput": false
+        },
+        "linkedService": {
+          "name": "sales",
+          "objectId": "eabd53c3-c2dd-49ff-9d88-d7b9941b891a",
+          "properties": {
+            "annotations": [],
+            "type": "DataWarehouse",
+            "typeProperties": {
+              "endpoint": "{WAREHOUSE_CONNECT_STRING}",
+              "artifactId": "{WAREHOUSE_ID}",
+              "workspaceId": "{WORKSPACE_ID}"
+            }
+          }
+        },
+        "typeProperties": {
+          "scripts": [
+            {
+              "type": "NonQuery",
+              "text": {
+                "value": "CREATE PROCEDURE [dbo].[refresh_sales]\r\nAS\r\nBEGIN\r\n  INSERT INTO sales([Date], DateKey, CustomerId, ProductId, Quantity, Sales) \r\n  SELECT \r\n    [Date], \r\n    DateKey = (YEAR([Date]) * 10000) + (MONTH([Date]) * 100) + DAY([Date]),\r\n    CustomerId,\r\n    ProductId, \r\n    Quantity, \r\n    Sales = SalesAmount\r\n  FROM staging.dbo.invoices \r\n  INNER JOIN staging.dbo.invoice_details \r\n  ON staging.dbo.invoices.InvoiceId = staging.dbo.invoice_details.InvoiceId\r\nEND",
+                "type": "Expression"
+              }
+            }
+          ],
+          "scriptBlockExecutionTimeout": "02:00:00"
+        }
+      },
+      {
+        "name": "Create refresh_calendar",
+        "type": "Script",
+        "dependsOn": [],
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureOutput": false,
+          "secureInput": false
+        },
+        "linkedService": {
+          "name": "sales",
+          "objectId": "eabd53c3-c2dd-49ff-9d88-d7b9941b891a",
+          "properties": {
+            "annotations": [],
+            "type": "DataWarehouse",
+            "typeProperties": {
+              "endpoint": "{WAREHOUSE_CONNECT_STRING}",
+              "artifactId": "{WAREHOUSE_ID}",
+              "workspaceId": "{WORKSPACE_ID}"
+            }
+          }
+        },
+        "typeProperties": {
+          "scripts": [
+            {
+              "type": "NonQuery",
+              "text": {
+                "value": "CREATE PROCEDURE [dbo].[refresh_calendar]\r\nAS\r\nBEGIN\r\n SET datefirst 1;\r\n\r\n DECLARE @MinDate date = (SELECT MIN([Date]) FROM sales)\r\n DECLARE @MaxDate date =  (SELECT MAX([Date]) FROM sales)\r\n\r\n DECLARE @StartDate date = (SELECT DATEFROMPARTS(YEAR(@MinDate), 1, 1))\r\n DECLARE @EndDate date = (SELECT DATEFROMPARTS(YEAR(@MaxDate), 12, 31))\r\n DECLARE @DayCount int = DATEDIFF(DAY, @StartDate, @EndDate) + 1\r\n\r\n INSERT INTO calendar([Date], DateKey,  Year, Quarter, Month, Day, MonthInYear, MonthInYearSort, DayOfWeek, DayOfWeekSort) \r\n SELECT\r\n   [Date] = DATEADD(day, value, @StartDate),\r\n   DateKey =  (YEAR(DATEADD(day, value, @StartDate)) * 10000) + (MONTH(DATEADD(day, value, @StartDate)) * 100) + DAY(DATEADD(day, value, @StartDate)),\r\n   Year = YEAR(DATEADD(day, value, @StartDate)),\r\n   Quarter = CONCAT(YEAR(DATEADD(day, value, @StartDate)), '-Q',  DATEPART(quarter, DATEADD(day, value, @StartDate) )),\r\n   Month = FORMAT ( DATEADD(day, value, @StartDate), 'yyyy-MM' ),\r\n   Day = DAY(DATEADD(day, value, @StartDate)), \r\n   MonthInYear = FORMAT ( DATEADD(day, value, @StartDate), 'MMMM' ),\r\n   MonthInYearSort = MONTH(DATEADD(day, value, @StartDate)),\r\n   DayOfWeek = DATENAME(WEEKDAY, DATEADD(day, value, @StartDate)),\r\n   DayOfWeekSort = DATEPART(weekday, DATEADD(day, value, @StartDate))\r\n FROM GENERATE_SERIES(0, @DayCount, 1)\r\n \r\nEND",
+                "type": "Expression"
+              }
+            }
+          ],
+          "scriptBlockExecutionTimeout": "02:00:00"
+        }
+      }
+    ],
+    "lastModifiedByObjectId": "54995a14-fa6e-4071-b50c-9260014f4ff0",
+    "lastPublishTime": "2024-06-23T15:39:05Z"
+  }
+}

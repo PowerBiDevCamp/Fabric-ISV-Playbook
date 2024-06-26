@@ -1,0 +1,128 @@
+{
+  "name": "Refresh All Tables",
+  "objectId": "6aa9f93a-3256-4712-ad7c-ea1f7e514455",
+  "properties": {
+    "activities": [
+      {
+        "name": "Execute refresh_products",
+        "type": "SqlServerStoredProcedure",
+        "dependsOn": [],
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureOutput": false,
+          "secureInput": false
+        },
+        "typeProperties": {
+          "storedProcedureName": "[dbo].[refresh_products]"
+        },
+        "linkedService": {
+          "name": "sales",
+          "objectId": "43e4b7a5-cf2e-4e5f-b669-ed3864adcda8",
+          "properties": {
+            "annotations": [],
+            "type": "DataWarehouse",
+            "typeProperties": {
+              "endpoint": "{WAREHOUSE_CONNECT_STRING}",
+              "artifactId": "{WAREHOUSE_ID}",
+              "workspaceId": "{WORKSPACE_ID}"
+            }
+          }
+        }
+      },
+      {
+        "name": "Execute refresh_customers",
+        "type": "SqlServerStoredProcedure",
+        "dependsOn": [],
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureOutput": false,
+          "secureInput": false
+        },
+        "typeProperties": {
+          "storedProcedureName": "[dbo].[refresh_customers]"
+        },
+        "linkedService": {
+          "name": "sales",
+          "objectId": "43e4b7a5-cf2e-4e5f-b669-ed3864adcda8",
+          "properties": {
+            "annotations": [],
+            "type": "DataWarehouse",
+            "typeProperties": {
+              "endpoint": "{WAREHOUSE_CONNECT_STRING}",
+              "artifactId": "{WAREHOUSE_ID}",
+              "workspaceId": "{WORKSPACE_ID}"
+            }
+          }
+        }
+      },
+      {
+        "name": "Execute refresh_sales",
+        "type": "SqlServerStoredProcedure",
+        "dependsOn": [],
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureOutput": false,
+          "secureInput": false
+        },
+        "typeProperties": {
+          "storedProcedureName": "[dbo].[refresh_sales]"
+        },
+        "linkedService": {
+          "name": "sales",
+          "objectId": "43e4b7a5-cf2e-4e5f-b669-ed3864adcda8",
+          "properties": {
+            "annotations": [],
+            "type": "DataWarehouse",
+            "typeProperties": {
+              "endpoint": "{WAREHOUSE_CONNECT_STRING}",
+              "artifactId": "{WAREHOUSE_ID}",
+              "workspaceId": "{WORKSPACE_ID}"
+            }
+          }
+        }
+      },
+      {
+        "name": "Execute refresh_calendar",
+        "type": "SqlServerStoredProcedure",
+        "dependsOn": [{
+            "activity": "Execute refresh_sales",
+            "dependencyConditions": [
+              "Completed"
+            ]
+          }
+        ],
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureOutput": false,
+          "secureInput": false
+        },
+        "typeProperties": {
+          "storedProcedureName": "[dbo].[refresh_calendar]"
+        },
+        "linkedService": {
+          "name": "sales",
+          "objectId": "43e4b7a5-cf2e-4e5f-b669-ed3864adcda8",
+          "properties": {
+            "annotations": [],
+            "type": "DataWarehouse",
+            "typeProperties": {
+              "endpoint": "{WAREHOUSE_CONNECT_STRING}",
+              "artifactId": "{WAREHOUSE_ID}",
+              "workspaceId": "{WORKSPACE_ID}"
+            }
+          }
+        }
+      }
+    ],
+    "lastModifiedByObjectId": "54995a14-fa6e-4071-b50c-9260014f4ff0",
+    "lastPublishTime": "2024-06-23T16:13:28Z"
+  }
+}
