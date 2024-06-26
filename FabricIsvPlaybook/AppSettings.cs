@@ -17,7 +17,7 @@ public class AppSettings {
   public const string AzureStoragePath = "/";
   public const string AzureStorageConnectId = "YOUR_AZURE_STORAGE_CONNECTION_ID";
 
-  // Add Azure AD object Ids for 2 users, a group and a service principal for testing role assignments  // Add Azure AD object Ids for 2 users, a group and a service principal for testing role assignments
+  // Add Azure AD object Ids for 2 users, a group and a service principal for testing role assignments  
   public const string AdminUser1Id = "ADD_ID_FOR_ADMIN_USER_HERE";
   public const string TestUser1Id = "ADD_ID_FOR_TEST_USER1_HERE";
   public const string TestUser2Id = "ADD_ID_FOR_TES_USER2_HERE";
