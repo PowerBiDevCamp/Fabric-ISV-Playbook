@@ -1,54 +1,21 @@
 ﻿
 class Program {
 
-  public static void Fodder() {
-
-    // string workspaceName = "A Data Pipeline Test 2";
-
-
-    // CustomerTenantBuilder.CreateCustomerTenant(workspaceName);    
-    // CustomerTenantBuilder.CreateCustomerTenantWithUsers(workspaceName);
-
-    // Imported semantic model demos
-    // CustomerTenantBuilder.CreateTenantWithImportedSalesModel(workspaceName);
-    // CustomerTenantBuilder.UpdateSalesModel(workspaceName);
-    // CustomerTenantBuilder.UpdateSalesReport(workspaceName);
-
-    // CustomerTenantBuilder.CreateCustomerTenantWithLakehouse(workspaceName);
-
-    //CustomerTenantBuilder.CreateCustomerTenantWithWarehouse(workspaceName);
-
-    //CustomerTenantBuilder.CreateCustomerTenantWithOnelakeFileWriter(workspaceName);
-
-
-    //string workspaceName = "Demo Customer Tenant";
-    //string server = AppSettings.SqlServer;
-    //string database = AppSettings.SqlDatabase;
-    //string connectionName = $"{workspaceName} - {server}:{database}";
-    //FabricConnectionsApi.DeleteConnectionIfItExists(connectionName);
-    //FabricConnectionsApi.CreateSqlConnection(connectionName, server, database);
-
-
-
-  }
-
-
   public static void Main() {
 
-    // Setup_ViewWorkspacesAndCapacities();
+    Setup_ViewWorkspacesAndCapacities();
     // Demo01_CreateCustomerTenant();
     // Demo02_CreateImportedSalesModel();
     // Demo03_CreateTenantWithLakehouseAndNotebook();
     // Demo04_CreateTenantWithWarehouseAndDataPipelines();
     // Demo05_CreateTenantWithShortcutAndLoadTableApi();
     // Demo06_CreateTenantWithWarehouseAndSqlClient();
-    Demo07_CreateTenantWithAdlsGen2Api();
-
+    // Demo07_CreateTenantWithAdlsGen2Api();
   }
 
   public static void Setup_ViewWorkspacesAndCapacities() {
     CustomerTenantBuilder.ViewWorkspaces();
-    // CustomerTenantBuilder.ViewCapacities();
+    CustomerTenantBuilder.ViewCapacities();
   }
 
   public static void Demo01_CreateCustomerTenant() {
