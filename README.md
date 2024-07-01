@@ -80,9 +80,9 @@ the current user. When the **FabricIsvPlaybook** project calls Entra Id
 to acquire an access token for the Fabric REST API, it just needs to
 pass a single delegated scope.
 
-```c#
+```
 public static readonly string[] Fabric_User_Impresonation = new string[] {
-"https://api.fabric.microsoft.com/user_impersonation"
+  "https://api.fabric.microsoft.com/user_impersonation"
 };
 ```
 
@@ -93,17 +93,17 @@ application, you cannot rely on the convenience of the
 acquire access tokens by passing a far more granular set of permission
 scopes defined by the Fabric REST API.
 
-```c#
+```
 public static readonly string[] TenantProvisioning = new string[] {
-"https://api.fabric.microsoft.com/Capacity.ReadWrite.All",
-"https://api.fabric.microsoft.com/Workspace.ReadWrite.All",
-"https://api.fabric.microsoft.com/Item.ReadWrite.All",
-"https://api.fabric.microsoft.com/Item.Read.All",
-"https://api.fabric.microsoft.com/Item.Execute.All",
-"https://api.fabric.microsoft.com/Content.Create",
-"https://api.fabric.microsoft.com/Dataset.ReadWrite.All ",
-"https://api.fabric.microsoft.com/Report.ReadWrite.All",
-"https://api.fabric.microsoft.com/Workspace.GitCommit.All"
+  "https://api.fabric.microsoft.com/Capacity.ReadWrite.All",
+  "https://api.fabric.microsoft.com/Workspace.ReadWrite.All",
+  "https://api.fabric.microsoft.com/Item.ReadWrite.All",
+  "https://api.fabric.microsoft.com/Item.Read.All",
+  "https://api.fabric.microsoft.com/Item.Execute.All",
+  "https://api.fabric.microsoft.com/Content.Create",
+  "https://api.fabric.microsoft.com/Dataset.ReadWrite.All ",
+  "https://api.fabric.microsoft.com/Report.ReadWrite.All",
+  "https://api.fabric.microsoft.com/Workspace.GitCommit.All"
 };
 ```
 
