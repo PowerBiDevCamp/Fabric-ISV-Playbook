@@ -80,7 +80,7 @@ the current user. When the **FabricIsvPlaybook** project calls Entra Id
 to acquire an access token for the Fabric REST API, it just needs to
 pass a single delegated scope.
 
-```cs
+```c#
 public static readonly string[] Fabric_User_Impresonation = new string[] {
 "https://api.fabric.microsoft.com/user_impersonation"
 };
@@ -93,7 +93,7 @@ application, you cannot rely on the convenience of the
 acquire access tokens by passing a far more granular set of permission
 scopes defined by the Fabric REST API.
 
-```cs
+```c#
 public static readonly string[] TenantProvisioning = new string[] {
 "https://api.fabric.microsoft.com/Capacity.ReadWrite.All",
 "https://api.fabric.microsoft.com/Workspace.ReadWrite.All",
