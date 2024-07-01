@@ -10,9 +10,7 @@ configuring Fabric workspaces and workspace items including semantic
 models, reports, lakehouses, notebooks, warehouses, data pipelines and
 shortcuts.
 
-<img src="./images/media/image1.png"
-style="width:1.92744in;height:1.96688in"
-alt="A screenshot of a computer Description automatically generated" />
+<img src="./images/media/image1.png" style="width:60%"  />
 
 ## Assumptions, Limitations and Temporary Workaround
 
@@ -61,7 +59,9 @@ infrastructure provides PowerShell script authors with the ability to
 implement an authentication flow to acquire an access token in a single
 line of code.
 
-\$token = Get-AzAccessToken -Resource URL "https://graph.microsoft.com/"
+```powershell
+$token = Get-AzAccessToken -Resource URL "https://graph.microsoft.com/"
+```
 
 Over time, the Microsoft developer community has discovered that the
 **Microsoft** **Azure PowerShell** application can be leveraged when
@@ -80,12 +80,11 @@ the current user. When the **FabricIsvPlaybook** project calls Entra Id
 to acquire an access token for the Fabric REST API, it just needs to
 pass a single delegated scope.
 
-public static readonly string\[\] Fabric_User_Impresonation = new
-string\[\] {
-
+```cs
+public static readonly string[] Fabric_User_Impresonation = new string[] {
 "https://api.fabric.microsoft.com/user_impersonation"
-
 };
+```
 
 The **user_impersonation** permission scope is only supported in
 Microsoft first-party applications. When you create a custom Entra Id
@@ -94,27 +93,19 @@ application, you cannot rely on the convenience of the
 acquire access tokens by passing a far more granular set of permission
 scopes defined by the Fabric REST API.
 
-public static readonly string\[\] TenantProvisioning = new string\[\] {
-
+```cs
+public static readonly string[] TenantProvisioning = new string[] {
 "https://api.fabric.microsoft.com/Capacity.ReadWrite.All",
-
 "https://api.fabric.microsoft.com/Workspace.ReadWrite.All",
-
 "https://api.fabric.microsoft.com/Item.ReadWrite.All",
-
 "https://api.fabric.microsoft.com/Item.Read.All",
-
 "https://api.fabric.microsoft.com/Item.Execute.All",
-
 "https://api.fabric.microsoft.com/Content.Create",
-
 "https://api.fabric.microsoft.com/Dataset.ReadWrite.All ",
-
 "https://api.fabric.microsoft.com/Report.ReadWrite.All",
-
 "https://api.fabric.microsoft.com/Workspace.GitCommit.All"
-
 };
+```
 
 As you have seen, the **FabricIsvPlaybook** project is configured to use
 the **Microsoft** **Azure PowerShell** application to simplify and speed
