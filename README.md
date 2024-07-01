@@ -23,9 +23,14 @@ Connections API will be incrementally released throughout the 2024
 calendar year. The June 2024 release of the **FabricIsvPlaybook**
 project is based on the following assumptions and workarounds.
 
-- Fabric User API calls are executed with a user identity, not a service principal identity
-- User authentication is configured with the **Microsoft** **Azure PowerShell** first-party application
-- Setting credentials for DirectLake semantic models uses a Power BI REST API workaround
+- Fabric User API calls are executed with a user identity, not a service
+  principal identity
+
+- User authentication is configured with the **Microsoft** **Azure
+  PowerShell** first-party application
+
+- Setting credentials for DirectLake semantic models uses a Power BI
+  REST API workaround
 
 You can expect that the **FabricIsvPlaybook** project will be updated as
 incremental enhancements on Fabric platform become available to
@@ -56,9 +61,7 @@ infrastructure provides PowerShell script authors with the ability to
 implement an authentication flow to acquire an access token in a single
 line of code.
 
-```
-$token = Get-AzAccessToken -Resource URL "https://graph.microsoft.com/"
-```
+\$token = Get-AzAccessToken -Resource URL "https://graph.microsoft.com/"
 
 Over time, the Microsoft developer community has discovered that the
 **Microsoft** **Azure PowerShell** application can be leveraged when
@@ -77,11 +80,12 @@ the current user. When the **FabricIsvPlaybook** project calls Entra Id
 to acquire an access token for the Fabric REST API, it just needs to
 pass a single delegated scope.
 
-```
-public static readonly string[] Fabric_User_Impresonation = new string[] {
- "https://api.fabric.microsoft.com/user_impersonation"
+public static readonly string\[\] Fabric_User_Impresonation = new
+string\[\] {
+
+"https://api.fabric.microsoft.com/user_impersonation"
+
 };
-```
 
 The **user_impersonation** permission scope is only supported in
 Microsoft first-party applications. When you create a custom Entra Id
@@ -90,19 +94,27 @@ application, you cannot rely on the convenience of the
 acquire access tokens by passing a far more granular set of permission
 scopes defined by the Fabric REST API.
 
-```
-public static readonly string[] TenantProvisioning = new string[] {
+public static readonly string\[\] TenantProvisioning = new string\[\] {
+
 "https://api.fabric.microsoft.com/Capacity.ReadWrite.All",
+
 "https://api.fabric.microsoft.com/Workspace.ReadWrite.All",
+
 "https://api.fabric.microsoft.com/Item.ReadWrite.All",
+
 "https://api.fabric.microsoft.com/Item.Read.All",
+
 "https://api.fabric.microsoft.com/Item.Execute.All",
+
 "https://api.fabric.microsoft.com/Content.Create",
+
 "https://api.fabric.microsoft.com/Dataset.ReadWrite.All ",
+
 "https://api.fabric.microsoft.com/Report.ReadWrite.All",
+
 "https://api.fabric.microsoft.com/Workspace.GitCommit.All"
+
 };
-```
 
 As you have seen, the **FabricIsvPlaybook** project is configured to use
 the **Microsoft** **Azure PowerShell** application to simplify and speed
