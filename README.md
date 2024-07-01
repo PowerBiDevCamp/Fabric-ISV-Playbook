@@ -122,9 +122,7 @@ The first time you run the **FabricIsvPlaybook** project, you will be
 redirected to a browser and prompted to sign in using your Entra Id user
 account.
 
-<img src="./images/media/image2.png"
-style="width:1.89462in;height:1.65423in"
-alt="A screenshot of a computer Description automatically generated" />
+<img src="./images/media/image2.png" style="width:50%" />
 
 Once you sign in interactively, the Entra Id service returns to your
 application with an access token and a refresh token. There is code in
