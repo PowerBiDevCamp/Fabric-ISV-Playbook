@@ -23,7 +23,6 @@ public class AppSettings {
   // Managed identity created in Azure for service principal auth
   public const string managedIdentityClientId = "55555555-5555-5555-55555-555555555555";
 
-
   // Add Azure AD object Ids for 2 users, a group and a service principal for testing role assignments  
   public const string AdminUser1Id = "66666666-6666-6666-6666-666666666666";
   public const string TestUser1Id = "77777777-7777-7777-7777-777777777777";
