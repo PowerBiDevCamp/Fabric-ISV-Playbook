@@ -4,15 +4,23 @@ using Microsoft.Identity.Client;
 
 public class OneLakeTokenCredentials : TokenCredential {
 
-  private static readonly string[] requiredScoped = new string[] {
-      "https://storage.azure.com/user_impersonation"
-    };
+  private static string[] scopes;
 
-  private static AuthenticationResult accessTokenResult = EntraIdTokenManager.GetAccessTokenResult(requiredScoped);
+  private static AuthenticationResult accessTokenResult;
 
   private readonly AccessToken accessToken;
 
   public OneLakeTokenCredentials() {
+
+    if (AppSettings.AuthenticationMode == AppAuthenticationMode.ServicePrincipalAuth) {
+      scopes = new string[] { "https://storage.azure.com/.default" };
+    }
+    else {
+      scopes = new string[] { "https://storage.azure.com/user_impersonation" };
+    }
+
+    var accessTokenResult = EntraIdTokenManager.GetAccessTokenResult(scopes);
+
     accessToken = new AccessToken(accessTokenResult.AccessToken, accessTokenResult.ExpiresOn);
   }
 

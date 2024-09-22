@@ -2,13 +2,15 @@
 using Microsoft.PowerBI.Api;
 using Microsoft.Rest;
 using System.Net.Http.Headers;
+using System;
 
-public class PowerBiUserApi {
+public class PowerBiRestApi {
 
   private static PowerBIClient pbiClient;
 
-  static PowerBiUserApi() {
-    string accessToken = EntraIdTokenManager.GetAccessToken(FabricPermissionScopes.Fabric_User_Impresonation); string urlPowerBiServiceApiRoot = AppSettings.PowerBiRestApiBaseUrl;
+  static PowerBiRestApi() {
+    string accessToken = EntraIdTokenManager.GetFabricAccessToken();
+    string urlPowerBiServiceApiRoot = AppSettings.PowerBiRestApiBaseUrl;
     var tokenCredentials = new TokenCredentials(accessToken, "Bearer");
     pbiClient = new PowerBIClient(new Uri(urlPowerBiServiceApiRoot), tokenCredentials);
   }
@@ -41,6 +43,14 @@ public class PowerBiUserApi {
     return pbiClient.Datasets.GetDatasourcesInGroup(new Guid(WorkspaceId), DatasetId).Value;
   }
 
+  public static IList<Report> GetReportsInWorkspace(Guid WorkspaceId) {
+    return pbiClient.Reports.GetReportsInGroup(WorkspaceId).Value;
+  }
+
+  public static IList<Dataset> GetDatasetsInWorkspace(Guid WorkspaceId) {
+    return pbiClient.Datasets.GetDatasetsInGroup(WorkspaceId).Value;
+  }
+
   public static void ViewDatasources(Guid WorkspaceId, Guid DatasetId) {
 
     // get datasources for dataset
@@ -68,17 +78,44 @@ public class PowerBiUserApi {
 
   public static string GetWebDatasourceUrl(Guid WorkspaceId, Guid DatasetId) {
 
-    // get datasources for dataset
+    AppLogger.LogStep("Discover URL datasource used by sementic model");
+
     var datasource = pbiClient.Datasets.GetDatasourcesInGroup(WorkspaceId, DatasetId.ToString()).Value.First();
     if (datasource.DatasourceType.Equals("Web")) {
+      AppLogger.LogSubstep("Web Datasource Url: " + datasource.ConnectionDetails.Url);
       return datasource.ConnectionDetails.Url;
     }
     else {
       throw new ApplicationException("Error - expecting Web connection");
-
     }
   }
 
+  public static void BindReportToSemanticModel(Guid WorkspaceId, Guid SemanticModelId, Guid ReportId) {
+
+    AppLogger.LogStep("Binding Report to Sementic Model");
+
+    RebindReportRequest bindRequest = new RebindReportRequest(SemanticModelId.ToString());
+
+    pbiClient.Reports.RebindReportInGroup(WorkspaceId, ReportId, bindRequest);
+
+    AppLogger.LogSubstep("Report binding to semantic model complete");
+
+  }
+
+
+  public static void BindSemanticModelToConnection(Guid WorkspaceId, Guid SemanticModelId, Guid ConnectionId) {
+
+    BindToGatewayRequest bindRequest = new BindToGatewayRequest {
+      DatasourceObjectIds = new List<Guid?>()
+    };
+
+    bindRequest.DatasourceObjectIds.Add(ConnectionId);
+
+    pbiClient.Datasets.BindToGatewayInGroup(WorkspaceId, SemanticModelId.ToString(), bindRequest);
+
+  }
+
+  // workaround methods used until Connections API is released
   public static void PatchAnonymousAccessWebCredentials(Guid WorkspaceId, Guid DatasetId) {
 
     // get datasources for dataset
@@ -105,84 +142,6 @@ public class PowerBiUserApi {
         pbiClient.Gateways.UpdateDatasource((Guid)gatewayId, (Guid)datasourceId, req);
 
       }
-    }
-  }
-
-  public static void PatchDirectLakeDatasetCredentials(Guid WorkspaceId, Guid DatasetId) {
-
-    AppLogger.LogOperationStart("Patching credentials for DirectLake semantic model");
-
-    BindToGatewayRequest bindRequest = new BindToGatewayRequest {
-      GatewayObjectId = new Guid("00000000-0000-0000-0000-000000000000")
-    };
-
-    pbiClient.Datasets.BindToGatewayInGroup(WorkspaceId, DatasetId.ToString(), bindRequest);
-
-    var datasources = pbiClient.Datasets.GetDatasourcesInGroup(WorkspaceId, DatasetId.ToString()).Value;
-
-    // update credentials for all SQL datasources
-    foreach (var datasource in datasources) {
-      if (datasource.DatasourceType.ToLower() == "sql") {
-
-        var datasourceId = datasource.DatasourceId;
-        var gatewayId = datasource.GatewayId;
-
-        // create credential details
-        var CredentialDetails = new CredentialDetails();
-        CredentialDetails.CredentialType = CredentialType.OAuth2;
-        CredentialDetails.UseCallerAADIdentity = true;
-        CredentialDetails.EncryptedConnection = EncryptedConnection.Encrypted;
-        CredentialDetails.EncryptionAlgorithm = EncryptionAlgorithm.None;
-        CredentialDetails.PrivacyLevel = PrivacyLevel.Organizational;
-
-        // create UpdateDatasourceRequest 
-        UpdateDatasourceRequest req = new UpdateDatasourceRequest(CredentialDetails);
-
-        // Execute Patch command to update Azure SQL datasource credentials
-        pbiClient.Gateways.UpdateDatasource((Guid)gatewayId, (Guid)datasourceId, req);
-
-      }
-
-      AppLogger.LogOperationComplete();
-    }
-
-
-  }
-
-  public static void RefreshLakehouseSqlEndointSchema(string DatabaseId) {
-
-    var access_token = EntraIdTokenManager.GetAccessToken(FabricPermissionScopes.Fabric_User_Impresonation);
-
-    string restUri = $"https://api.powerbi.com/v1.0/myorg/lhdatamarts/{DatabaseId}";
-    string postBody = "{datamartVersion: 5, commands: [{$type: \"MetadataRefreshCommand\"}]}";
-    HttpContent body = new StringContent(postBody);
-    body.Headers.ContentType = new MediaTypeWithQualityHeaderValue("application/json");
-
-    HttpClient client = new HttpClient();
-    client.DefaultRequestHeaders.Add("Accept", "application/json");
-    client.DefaultRequestHeaders.Add("Authorization", "Bearer " + access_token);
-
-    HttpResponseMessage response = client.PostAsync(restUri, body).Result;
-  }
-
-
-  public static void BindDatasetToConnection(string WorkspaceId, string DatasetId, string ConnectionId) {
-
-    BindToGatewayRequest bindRequest = new BindToGatewayRequest {
-      // GatewayObjectId = new Guid("00000000-0000-0000-0000-000000000000"),
-      DatasourceObjectIds = new List<Guid?>()
-    };
-
-    bindRequest.DatasourceObjectIds.Add(new Guid(ConnectionId));
-
-    pbiClient.Datasets.BindToGatewayInGroup(new Guid(WorkspaceId), DatasetId, bindRequest);
-
-  }
-
-  public static void ViewWorkspaces() {
-    var workspaces = pbiClient.Groups.GetGroups().Value;
-    foreach (var workspace in workspaces) {
-      Console.WriteLine(workspace.Name);
     }
   }
 

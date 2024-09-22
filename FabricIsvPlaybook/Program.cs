@@ -1,15 +1,23 @@
 ﻿
+using Microsoft.Fabric.Api;
+using Microsoft.Fabric.Api.Core.Models;
+
 class Program {
 
   public static void Main() {
+
+    AppSettings.AuthenticationMode = AppAuthenticationMode.UserAuth;
+
     Setup_ViewWorkspacesAndCapacities();
-    // Demo01_CreateCustomerTenant();
-    // Demo02_CreateImportedSalesModel();
-    // Demo03_CreateTenantWithLakehouseAndNotebook();
-    // Demo04_CreateTenantWithWarehouseAndDataPipelines();
-    // Demo05_CreateTenantWithShortcutAndLoadTableApi();
-    // Demo06_CreateTenantWithWarehouseAndSqlClient();
-    // Demo07_CreateTenantWithAdlsGen2Api();
+    // Demo01_CreateWorkspace();
+    // Demo02_CreateConnections();
+    // Demo03_DeploySolutionWithImportedSalesModel();
+    // Demo04_DeploySolutionWithLakehouseAndNotebook();
+    // Demo05_DeploySolutionWithWarehouseAndDataPipelines();
+    // Demo06_DeploySolutionWithShortcutAndLoadTableApi();
+    // Demo07_DeploySolutionWithWarehouseAndSqlClient();
+    // Demo08_DeploySolutionWithAdlsGen2Api();
+    // Demo09_BranchOutToFeatureWorkspace();
   }
 
   public static void Setup_ViewWorkspacesAndCapacities() {
@@ -17,51 +25,79 @@ class Program {
     CustomerTenantBuilder.ViewCapacities();
   }
 
-  public static void Demo01_CreateCustomerTenant() {
-    string workspaceName = "Demo01 - Create Customer Tenant";
-    //CustomerTenantBuilder.CreateCustomerTenant(workspaceName);
-    CustomerTenantBuilder.CreateCustomerTenantWithUsers(workspaceName);
+  public static void Demo01_CreateWorkspace() {
+    string workspaceName = "Demo01 - Create Workspace for Customer Tenant";
+    //CustomerTenantBuilder.CreateWorkspaceForCustomerTenant(workspaceName);
+     CustomerTenantBuilder.CreateWorkspaceWithRoleAssignments(workspaceName);
   }
 
-  public static void Demo02_CreateImportedSalesModel() {
+  public static void Demo02_CreateConnections() {
+    string workspaceName = "Demo02 - Create Connections";
+    CustomerTenantBuilder.CreateConnections(workspaceName);
+  }
 
-    string workspaceName = "Demo02 - Create Tenant with Imported Sales Model";
+  public static void Demo03_DeploySolutionWithImportedSalesModel() {
 
-    CustomerTenantBuilder.CreateTenantWithImportedSalesModel(workspaceName);
+    string workspaceName = "Demo03 - Deploy solution with Imported Sales Model";
+    
+    CustomerTenantBuilder.DeploySolutionWithImportedSalesModel(workspaceName);
     // CustomerTenantBuilder.ExportItemDefinitionsFromWorkspace(workspaceName);
-    // CustomerTenantBuilder.UpdateSalesModel(workspaceName);
-    // CustomerTenantBuilder.UpdateSalesReport(workspaceName);
+    // CustomerTenantBuilder.UpdateProductSalesSemanticModel(workspaceName);
+    // CustomerTenantBuilder.UpdateProductSalesReport(workspaceName);
+    // CustomerTenantBuilder.CloneWorkspace(workspaceName, "Clone of " + workspaceName);
+  }
+
+  public static void Demo04_DeploySolutionWithLakehouseAndNotebook() {
+    string workspaceName = "Demo04 - Deploy solution with Lakehouse and Notebook";
+    CustomerTenantBuilder.DeploySolutionWithLakehouseAndNotebook(workspaceName);
+  }
+
+  public static void Demo05_DeploySolutionWithWarehouseAndDataPipelines() {
+    string workspaceName = "Demo05 - Deploy solution with Warehouse and DataPipelines";
+    CustomerTenantBuilder.DeploySolutionWithWarehouseAndDataPipelines(workspaceName);
+  }
+
+  public static void Demo06_DeploySolutionWithShortcutAndLoadTableApi() {
+    string workspaceName = "Demo06 - Deploy solution with OneLake Shortcut and LoadTable API";
+    CustomerTenantBuilder.DeploySolutionWithWithShortcutAndLoadTableApi(workspaceName);
+  } 
+
+  public static void Demo07_DeploySolutionWithWarehouseAndSqlClient() {
+    string workspaceName = "Demo07 - Deploy solution with Warehouse and SqlClient";
+    CustomerTenantBuilder.DeploySolutionWithWarehouseAndSqlClient(workspaceName);
+  }
+
+  public static void Demo08_DeploySolutionWithAdlsGen2Api() {
+    string workspaceName = "Demo08 - Deploy solution with ADLS Gen2 API";
+    CustomerTenantBuilder.DeploySolutionWithAdlsGen2Api(workspaceName);
+  }
+
+  public static void Demo09_BranchOutToFeatureWorkspace() {
+   
+    string workspaceName = "Acme Corp";
+    string featureName = "Feature1";
+ 
+    // CustomerTenantBuilder.DeploySolutionWithLakehouseAndNotebook(workspaceName);
+    // CustomerTenantBuilder.ExportItemDefinitionsFromWorkspace(workspaceName);
+    CustomerTenantBuilder.BranchOutToFeatureWorkspace(workspaceName, featureName);
 
   }
 
-  public static void Demo03_CreateTenantWithLakehouseAndNotebook() {
+  public static void HelloDotNetSdk() {
 
-    string workspaceName = "Demo03 - Create Tenant with Lakehouse and Notebook";
-    CustomerTenantBuilder.CreateTenantWithLakehouseAndNotebook(workspaceName);
+    string accessToken = EntraIdTokenManager.GetFabricAccessToken();
+
+    FabricClient fabricApiClient = new FabricClient(accessToken);
+
+    List<Workspace> workspaces = fabricApiClient.Core.Workspaces.ListWorkspaces().ToList();
+
+    Console.WriteLine(" > Workspaces List");
+
+    foreach (var workspace in workspaces) {
+      Console.WriteLine("   - {0} ({1})", workspace.DisplayName, workspace.Id);
+    }
 
   }
 
-  public static void Demo04_CreateTenantWithWarehouseAndDataPipelines() {
-
-    string workspaceName = "Demo04 - Create Tenant with Warehouse and DataPipelines";
-    CustomerTenantBuilder.CreateTenantWithWarehouseAndDataPipelines(workspaceName);
-
-  }
-
-  public static void Demo05_CreateTenantWithShortcutAndLoadTableApi() {
-
-    string workspaceName = "Demo05 - Create Tenant with Shortcut and LoadTable API";
-    CustomerTenantBuilder.CreateTenantWithShortcutAndLoadTableApi(workspaceName);
-  }
-
-  public static void Demo06_CreateTenantWithWarehouseAndSqlClient() {
-    string workspaceName = "Demo06 - Create Tenant with Warehouse and SqlClient";
-    CustomerTenantBuilder.CreateTenantWithWarehouseAndSqlClient(workspaceName);
-  }
-
-  public static void Demo07_CreateTenantWithAdlsGen2Api() {
-    string workspaceName = "Demo07 - Create Tenant with ADLS Gen2 API";
-    CustomerTenantBuilder.CreateTenantWithAdlsGen2Api(workspaceName);
-  }
 
 }

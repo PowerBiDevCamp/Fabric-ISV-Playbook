@@ -1,0 +1,74 @@
+table Customers
+	sourceLineageTag: [dbo].[customers]
+
+	column CustomerId
+		dataType: int64
+		isHidden
+		formatString: 0
+		sourceLineageTag: CustomerId
+		summarizeBy: none
+		sourceColumn: CustomerId
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column Country
+		dataType: string
+		sourceLineageTag: Country
+		summarizeBy: none
+		sourceColumn: Country
+
+		annotation SummarizationSetBy = Automatic
+
+	column City
+		dataType: string
+		sourceLineageTag: City
+		summarizeBy: none
+		sourceColumn: City
+
+		annotation SummarizationSetBy = Automatic
+
+	column DOB
+		dataType: dateTime
+		formatString: General Date
+		sourceLineageTag: DOB
+		summarizeBy: none
+		sourceColumn: DOB
+
+		annotation SummarizationSetBy = Automatic
+
+	column Customer
+		dataType: string
+		sourceLineageTag: Customer
+		summarizeBy: none
+		sourceColumn: Customer
+
+		annotation SummarizationSetBy = Automatic
+
+	column Age
+		dataType: int64
+		formatString: 0
+		sourceLineageTag: Age
+		summarizeBy: none
+		sourceColumn: Age
+
+		annotation SummarizationSetBy = Automatic
+
+	hierarchy 'Customer Geography'
+
+		level Country
+			column: Country
+
+		level City
+			column: City
+
+	partition customers = entity
+		mode: directLake
+		source
+			entityName: customers
+			schemaName: dbo
+			expressionSource: DatabaseQuery
+
+	annotation IsTableInBiModel = True
+

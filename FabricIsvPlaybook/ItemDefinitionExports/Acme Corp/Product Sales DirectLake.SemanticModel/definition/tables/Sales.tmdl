@@ -1,0 +1,116 @@
+table Sales
+	sourceLineageTag: [dbo].[sales]
+
+	measure 'Sales Revenue' = Sum(Sales[Sales])
+		formatString: \$#,0;(\$#,0);\$#,0
+
+	measure 'Customer Count' = DISTINCTCOUNT(Sales[CustomerId])
+		formatString: #,0
+
+	measure 'First Sale' = FIRSTDATE(Sales[Date])
+		formatString: m/d/yyyy
+
+		annotation PBI_FormatHint = {"isDateTimeCustom":true}
+
+	measure 'Last Sale' = LASTDATE(Sales[Date])
+		formatString: m/d/yyyy
+
+		annotation PBI_FormatHint = {"isDateTimeCustom":true}
+
+	measure 'Units Sold' = SUM(Sales[Quantity])
+		formatString: #,0
+
+	measure 'Customer Rank' = ```
+			
+			IF( 
+			  HASONEVALUE(Customers[CustomerId]), 
+			  RANKX( 
+			    ALLSELECTED(Customers), 
+			    CALCULATE([Sales Revenue])
+			  )
+			)
+			```
+		formatString: 0
+
+	measure 'Product Rank' = ```
+			
+			IF( 
+			  HASONEVALUE(Products[Product]), 
+			  RANKX( 
+			    ALLSELECTED(Products), 
+			    CALCULATE([Sales Revenue])
+			  )
+			)
+			```
+		formatString: 0
+
+	column Date
+		dataType: dateTime
+		formatString: General Date
+		sourceLineageTag: Date
+		summarizeBy: none
+		sourceColumn: Date
+
+		annotation SummarizationSetBy = Automatic
+
+	column DateKey
+		dataType: int64
+		formatString: 0
+		sourceLineageTag: DateKey
+		summarizeBy: none
+		sourceColumn: DateKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column CustomerId
+		dataType: int64
+		isHidden
+		formatString: 0
+		sourceLineageTag: CustomerId
+		summarizeBy: none
+		sourceColumn: CustomerId
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column ProductId
+		dataType: int64
+		isHidden
+		formatString: 0
+		sourceLineageTag: ProductId
+		summarizeBy: none
+		sourceColumn: ProductId
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column Sales
+		dataType: double
+		sourceLineageTag: Sales
+		summarizeBy: sum
+		sourceColumn: Sales
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Quantity
+		dataType: int64
+		formatString: 0
+		sourceLineageTag: Quantity
+		summarizeBy: sum
+		sourceColumn: Quantity
+
+		annotation SummarizationSetBy = Automatic
+
+	partition sales = entity
+		mode: directLake
+		source
+			entityName: sales
+			schemaName: dbo
+			expressionSource: DatabaseQuery
+
+	annotation IsTableInBiModel = True
+

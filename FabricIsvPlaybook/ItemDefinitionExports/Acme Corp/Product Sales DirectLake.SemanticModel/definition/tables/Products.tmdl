@@ -1,0 +1,40 @@
+table Products
+	sourceLineageTag: [dbo].[products]
+
+	column ProductId
+		dataType: int64
+		isHidden
+		formatString: 0
+		sourceLineageTag: ProductId
+		summarizeBy: none
+		sourceColumn: ProductId
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column Product
+		dataType: string
+		sourceLineageTag: Product
+		summarizeBy: none
+		sourceColumn: Product
+
+		annotation SummarizationSetBy = Automatic
+
+	column Category
+		dataType: string
+		sourceLineageTag: Category
+		summarizeBy: none
+		sourceColumn: Category
+
+		annotation SummarizationSetBy = Automatic
+
+	partition products = entity
+		mode: directLake
+		source
+			entityName: products
+			schemaName: dbo
+			expressionSource: DatabaseQuery
+
+	annotation IsTableInBiModel = True
+

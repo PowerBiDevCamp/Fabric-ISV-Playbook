@@ -61,6 +61,21 @@ namespace FabricIsvPlaybook.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to # ADO Project used for GIT Integration with Fabric Workspace
+        ///
+        ///This ADO project synchronized witht he followng Fabric workspace
+        /// - Workspace Name: *{WORKSPACE_NAME}*
+        /// - Workspace Id: *{WORKSPACE_ID}*
+        ///
+        /// More info goes here..
+        /// </summary>
+        internal static string AdoReadMe_md {
+            get {
+                return ResourceManager.GetString("AdoReadMe_md", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to {
         ///  &quot;name&quot;: &quot;Copy Sales Data&quot;,
         ///  &quot;properties&quot;: {
@@ -80,7 +95,7 @@ namespace FabricIsvPlaybook.Properties {
         ///          &quot;source&quot;: {
         ///            &quot;type&quot;: &quot;DelimitedTextSource&quot;,
         ///            &quot;storeSettings&quot;: {
-        ///              &quot;type&quot;: &quot;AzureBlobFSRea [rest of string was truncated]&quot;;.
+        ///              &quot;typ [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string CopySalesData_json {
             get {
@@ -410,9 +425,7 @@ namespace FabricIsvPlaybook.Properties {
         ///    &quot;#99700A&quot;,
         ///    &quot;#FF4141&quot;,
         ///    &quot;#1F9A85&quot;,
-        ///    &quot;#25891C&quot;,
-        ///    &quot;#0057A2&quot;,
-        ///    &quot; [rest of string was truncated]&quot;;.
+        ///    [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string CY24SU02_json {
             get {
@@ -448,7 +461,7 @@ namespace FabricIsvPlaybook.Properties {
         
         /// <summary>
         ///   Looks up a localized string similar to {
-        ///  &quot;version&quot;: &quot;1.0&quot;,
+        ///  &quot;version&quot;: &quot;4.0&quot;,
         ///  &quot;settings&quot;: {}
         ///}
         ///
@@ -494,10 +507,7 @@ namespace FabricIsvPlaybook.Properties {
         ///    &quot;#0F5C55&quot;,
         ///    &quot;#540F5C&quot;,
         ///    &quot;#5C0F15&quot;,
-        ///    &quot;#0F155C&quot;,
-        ///    &quot;#7E6F36&quot;,
-        ///    &quot;#074B3F&quot;,
-        ///  [rest of string was truncated]&quot;;.
+        ///    &quot;#0F155C&quot;,        /// [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string NewExecutive_json {
             get {
@@ -552,9 +562,7 @@ namespace FabricIsvPlaybook.Properties {
         ///            &quot;Language&quot;: &quot;en-US&quot;,
         ///            &quot;Version&quot;: &quot;1.0.0&quot;
         ///          },
-        ///          &quot;contentType&quot;: &quot;json&quot;
-        ///        }
-        ///    [rest of string was truncated]&quot;;.
+        ///          &quot;contentType&quot;:  [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string sales_model_DirectLake_bim {
             get {

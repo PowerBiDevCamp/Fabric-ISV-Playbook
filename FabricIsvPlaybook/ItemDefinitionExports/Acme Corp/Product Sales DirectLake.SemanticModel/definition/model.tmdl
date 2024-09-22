@@ -1,0 +1,14 @@
+model Model
+	culture: en-US
+	collation: Latin1_General_100_BIN2_UTF8
+	defaultPowerBIDataSourceVersion: powerBI_V3
+
+annotation __PBI_TimeIntelligenceEnabled = 1
+
+ref table Products
+ref table Customers
+ref table Sales
+ref table Calendar
+
+ref cultureInfo en-US
+

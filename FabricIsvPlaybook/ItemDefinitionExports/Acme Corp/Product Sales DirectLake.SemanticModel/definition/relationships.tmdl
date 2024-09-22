@@ -1,0 +1,18 @@
+relationship 1e1b9255-37c0-5b09-e4cf-e097441ae95a
+	relyOnReferentialIntegrity
+	securityFilteringBehavior: none
+	fromColumn: Sales.CustomerId
+	toColumn: Customers.CustomerId
+
+relationship c4c82d44-c750-1138-769a-0ce1d69a5155
+	relyOnReferentialIntegrity
+	securityFilteringBehavior: none
+	fromColumn: Sales.ProductId
+	toColumn: Products.ProductId
+
+relationship 7aec17bf-09bc-c189-9fc3-5a52e0d66abb
+	relyOnReferentialIntegrity
+	securityFilteringBehavior: none
+	fromColumn: Sales.DateKey
+	toColumn: Calendar.DateKey
+

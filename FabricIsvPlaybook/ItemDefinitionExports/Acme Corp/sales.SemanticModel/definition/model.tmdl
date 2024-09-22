@@ -1,0 +1,7 @@
+model Model
+	culture: en-US
+	collation: Latin1_General_100_BIN2_UTF8
+	defaultPowerBIDataSourceVersion: powerBI_V3
+
+annotation __PBI_TimeIntelligenceEnabled = 0
+

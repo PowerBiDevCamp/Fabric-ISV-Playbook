@@ -1,5 +1,4 @@
 ﻿using Microsoft.Fabric.Api.Core.Models;
-using Microsoft.Fabric.Api.Lakehouse.Models;
 using System.Text;
 
 public class FabricItemDefinitionFactory {
@@ -59,6 +58,7 @@ public class FabricItemDefinitionFactory {
   public static UpdateItemDefinitionRequest GetSalesReportUpdateRequest(Guid SemanticModelId, string DisplayName) {
 
     string part1FileContent = FabricIsvPlaybook.Properties.Resources.definition_pbir.Replace("{SEMANTIC_MODEL_ID}", SemanticModelId.ToString());
+
     string part2FileContent = FabricIsvPlaybook.Properties.Resources.sales_report_v2_json;
     string part3FileContent = FabricIsvPlaybook.Properties.Resources.CY24SU02_json;
     string part4FileContent = FabricIsvPlaybook.Properties.Resources.NewExecutive_json;
@@ -156,35 +156,4 @@ public class FabricItemDefinitionFactory {
     return createRequest;
   }
 
-  public static void DeleteAllTemplateFiles(string WorkspaceName) {
-    string targetFolder = AppSettings.LocalTemplatesFolder + (string.IsNullOrEmpty(WorkspaceName) ? "" : WorkspaceName + @"\");
-    if (Directory.Exists(targetFolder)) {
-      DirectoryInfo di = new DirectoryInfo(targetFolder);
-      foreach (FileInfo file in di.GetFiles()) { file.Delete(); }
-      foreach (DirectoryInfo dir in di.GetDirectories()) { dir.Delete(true); }
-    }
-  }
-
-  public static void WriteFile(string WorkspaceFolder, string ItemFolder, string FilePath, string FileContent, bool ConvertFromBase64 = true) {
-
-    if (ConvertFromBase64) {
-      byte[] bytes = Convert.FromBase64String(FileContent);
-      FileContent = Encoding.UTF8.GetString(bytes, 0, bytes.Length);
-    }
-
-    FilePath = FilePath.Replace("/", @"\");
-    string folderPath = AppSettings.LocalTemplatesFolder + WorkspaceFolder + @"\" + ItemFolder;
-
-    Directory.CreateDirectory(folderPath);
-
-    string fullPath = folderPath + @"\" + FilePath;
-
-    Directory.CreateDirectory(Path.GetDirectoryName(fullPath));
-
-    File.WriteAllText(fullPath, FileContent);
-
-  }
-
 }
-
-

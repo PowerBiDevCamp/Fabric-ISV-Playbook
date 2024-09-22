@@ -1,0 +1,109 @@
+table Calendar
+	sourceLineageTag: [dbo].[calendar]
+
+	column Date
+		dataType: dateTime
+		formatString: General Date
+		sourceLineageTag: Date
+		summarizeBy: none
+		sourceColumn: Date
+
+		annotation SummarizationSetBy = Automatic
+
+	column DateKey
+		dataType: int64
+		isHidden
+		formatString: 0
+		sourceLineageTag: DateKey
+		summarizeBy: none
+		sourceColumn: DateKey
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column Year
+		dataType: int64
+		formatString: 0
+		sourceLineageTag: Year
+		summarizeBy: none
+		sourceColumn: Year
+
+		annotation SummarizationSetBy = Automatic
+
+	column Quarter
+		dataType: string
+		sourceLineageTag: Quarter
+		summarizeBy: none
+		sourceColumn: Quarter
+
+		annotation SummarizationSetBy = Automatic
+
+	column Month
+		dataType: string
+		sourceLineageTag: Month
+		summarizeBy: none
+		sourceColumn: Month
+
+		annotation SummarizationSetBy = Automatic
+
+	column Day
+		dataType: int64
+		formatString: 0
+		sourceLineageTag: Day
+		summarizeBy: none
+		sourceColumn: Day
+
+		annotation SummarizationSetBy = Automatic
+
+	column MonthInYear
+		dataType: string
+		sourceLineageTag: MonthInYear
+		summarizeBy: none
+		sourceColumn: MonthInYear
+		sortByColumn: MonthInYearSort
+
+		annotation SummarizationSetBy = Automatic
+
+	column MonthInYearSort
+		dataType: int64
+		isHidden
+		formatString: 0
+		sourceLineageTag: MonthInYearSort
+		summarizeBy: none
+		sourceColumn: MonthInYearSort
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column DayOfWeek
+		dataType: string
+		sourceLineageTag: DayOfWeek
+		summarizeBy: none
+		sourceColumn: DayOfWeek
+		sortByColumn: DayOfWeekSort
+
+		annotation SummarizationSetBy = Automatic
+
+	column DayOfWeekSort
+		dataType: int64
+		isHidden
+		formatString: 0
+		sourceLineageTag: DayOfWeekSort
+		summarizeBy: none
+		sourceColumn: DayOfWeekSort
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	partition calendar-18d918cd-05f3-4529-bf7b-a757b3734120 = entity
+		mode: directLake
+		source
+			entityName: calendar
+			schemaName: dbo
+			expressionSource: DatabaseQuery
+
+	annotation IsTableInBiModel = True
+
