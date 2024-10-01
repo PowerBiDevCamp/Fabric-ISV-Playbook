@@ -751,7 +751,7 @@ class CustomerTenantBuilder {
 
     lakehouseIdRedirects.Add(sourceWorkspace.Id.ToString(), featureWorkspace.Id.ToString());
 
-    // Enumerate through semantic models in source workspace to create semantic models in target workspace
+    // Enumerate through lakehouses in source workspace to createlakehouses in target workspace
     var lakehouses = FabricRestApi.GetItems(sourceWorkspace.Id, "Lakehouse");
 
     foreach (var sourceLakehouse in lakehouses) {
@@ -768,6 +768,7 @@ class CustomerTenantBuilder {
       lakehouseSqlEndpointRedirects.Add(sourceLakehouseSqlEndpoint.Id, newLakehouseSqlEndpoint.Id);
     }
 
+    // Enumerate through notebooks in source workspace to create notebooks in target workspace
     var notebooks = FabricRestApi.GetItems(sourceWorkspace.Id, "Notebook");
     foreach (var sourceNotebook in notebooks) {
 
