@@ -118,6 +118,7 @@ public class CreateConnectionDetails {
 
 public class ConnectionParameter {
   public string name { get; set; }
+  public string dataType { get; set; }
   public string value { get; set; }
 }
 
@@ -367,7 +368,7 @@ public class FabricConnectionsApi {
         type = FabricConnectionType.Web,
         parameters = new List<ConnectionParameter> {
          new ConnectionParameter {
-           name = "url", value=Url
+           name = "url", value=Url, dataType = "text"
          }
        },
 
@@ -403,10 +404,10 @@ public class FabricConnectionsApi {
         type = FabricConnectionType.AzureDataLakeStorage,
         parameters = new List<ConnectionParameter> {
          new ConnectionParameter {
-           name = "server", value=Server
+           name = "server", value=Server, dataType = "text"
          },
          new ConnectionParameter {
-           name = "path", value=Path
+           name = "path", value=Path, dataType = "text"
          }
        }
       },
@@ -442,10 +443,10 @@ public class FabricConnectionsApi {
         type = FabricConnectionType.AzureDataLakeStorage,
         parameters = new List<ConnectionParameter> {
          new ConnectionParameter {
-           name = "server", value=Server
+           name = "server", value=Server, dataType = "text"
          },
          new ConnectionParameter {
-           name = "path", value=Path
+           name = "path", value=Path, dataType = "text"
          }
        }
       },
@@ -457,7 +458,7 @@ public class FabricConnectionsApi {
           credentialType = FabricCredentialType.ServicePrincipal,
           tenantId = AppSettings.ServicePrincipalAuthTenantId,
           servicePrincipalClientId = AppSettings.ServicePrincipalAuthClientId,
-          servicePrincipalSecret = AppSettings.servicePrincipalAuthClientSecret
+          servicePrincipalSecret = AppSettings.ServicePrincipalAuthClientSecret
         }
       }
     };
@@ -484,10 +485,10 @@ public class FabricConnectionsApi {
         type = FabricConnectionType.SQL,
         parameters = new List<ConnectionParameter> {
          new ConnectionParameter {
-           name = "server", value=Server
+           name = "server", value=Server, dataType = "text"
          },
          new ConnectionParameter {
-           name = "database", value=Database
+           name = "database", value=Database, dataType = "text"
          }
        }
       },
@@ -523,10 +524,10 @@ public class FabricConnectionsApi {
         type = FabricConnectionType.SQL,
         parameters = new List<ConnectionParameter> {
          new ConnectionParameter {
-           name = "server", value=Server
+           name = "server", value=Server, dataType = "text"
          },
          new ConnectionParameter {
-           name = "database", value=Database
+           name = "database", value=Database, dataType = "text"
          }
 
        }
@@ -566,10 +567,10 @@ public class FabricConnectionsApi {
         type = FabricConnectionType.SQL,
         parameters = new List<ConnectionParameter> {
          new ConnectionParameter {
-           name = "server", value=Server
+           name = "server", value=Server, dataType = "text"
          },
          new ConnectionParameter {
-           name = "database", value=Database
+           name = "database", value=Database, dataType = "text"
          }
 
        }
@@ -582,7 +583,7 @@ public class FabricConnectionsApi {
           credentialType = FabricCredentialType.ServicePrincipal,
           tenantId = AppSettings.ServicePrincipalAuthTenantId,
           servicePrincipalClientId = AppSettings.ServicePrincipalAuthClientId,
-          servicePrincipalSecret = AppSettings.servicePrincipalAuthClientSecret
+          servicePrincipalSecret = AppSettings.ServicePrincipalAuthClientSecret
         }
       }
     };

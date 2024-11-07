@@ -70,7 +70,7 @@ public class EntraIdTokenManager {
 
     // Azure AD Application Id for service principal authentication
     string clientId = AppSettings.ServicePrincipalAuthClientId;
-    string clientSecret = AppSettings.servicePrincipalAuthClientSecret;
+    string clientSecret = AppSettings.ServicePrincipalAuthClientSecret;
     string tenantId = AppSettings.ServicePrincipalAuthTenantId;
     string tenantSpecificAuthority = "https://login.microsoftonline.com/" + tenantId;
 

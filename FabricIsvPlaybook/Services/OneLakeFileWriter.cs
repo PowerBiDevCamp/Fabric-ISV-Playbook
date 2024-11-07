@@ -19,7 +19,7 @@ public class OneLakeTokenCredentials : TokenCredential {
       scopes = new string[] { "https://storage.azure.com/user_impersonation" };
     }
 
-    var accessTokenResult = EntraIdTokenManager.GetAccessTokenResult(scopes);
+    accessTokenResult = EntraIdTokenManager.GetAccessTokenResult(scopes);
 
     accessToken = new AccessToken(accessTokenResult.AccessToken, accessTokenResult.ExpiresOn);
   }
